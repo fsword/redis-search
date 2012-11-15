@@ -10,6 +10,7 @@ namespace :redis_search do
     puts "Now indexing search to Redis...".rjust(120)
     puts ""
     Redis::Search.indexed_models.each do |klass|
+      klass = klass.capitalize.to_s.constantize if klass.is_a? Symbol
       print "[#{klass.to_s}]"
       if klass.superclass.to_s == "ActiveRecord::Base"
         klass.find_in_batches(:batch_size => 1000) do |items|
